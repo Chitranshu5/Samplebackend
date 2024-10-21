@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 // Replace with your MongoDB connection string
-const url = "mongodb+srv://chitranshusaini8:Chitranshu@cluster0.k81bdbi.mongodb.net/dash?retryWrites=true&w=majority&appName=Cluster0";
+const url = "mongodb+srv://chitranshusaini8:Chitranshu@cluster0.k81bdbi.mongodb.net/BRTU_Data_Center?retryWrites=true&w=majority&appName=Cluster0";
 
 async function connectToDatabase() {
   try {
