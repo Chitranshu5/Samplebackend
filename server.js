@@ -5,6 +5,8 @@ import { connectToDatabase } from "./model/db.js";
 import { PdfModel } from "./model/pdf.model.js";
 import { Post } from "./model/post.model.js";
 import { responseHelper } from "./util/helper.js";
+import { SyllabusModel } from "./model/sysllabus.model.js";
+import { StudyMaterialModel } from "./model/study.model.js";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -125,6 +127,135 @@ app.get("/fetchCategory", async (req, res) => {
       error: error.message,
     });
     console.log(error.message);
+  }
+});
+
+
+app.get("/getStudyMaterials/:stream/:branch/:branchYear", async (req, res) => {
+  try {
+    const { stream, branch, branchYear } = req.params; // Extract path parameters
+
+    // Validate parameters
+    if (!stream || !branch || !branchYear) {
+      return res.status(400).json({
+        success: false,
+        message: "All parameters (stream, branch, branchYear) are required.",
+      });
+    }
+
+    let query = { stream, branchYear };
+
+    // Include branch if the stream isn't B.Tech or branchYear isn't First Year
+    if (!(stream === "B.Tech" && branchYear === "First Year")) {
+      query.branch = branch;
+    }
+
+    // Fetch study materials from the database based on the query
+    const studyMaterials = await StudyMaterialModel.find(query);
+
+    // Check if study materials were found
+    if (!studyMaterials.length) {
+      return res.status(404).json({
+        success: false,
+        message: "No study materials found for the specified criteria.",
+      });
+    }
+
+    // Return the retrieved study materials
+    res.status(200).json({ success: true, data: studyMaterials });
+  } catch (error) {
+    console.error("Error fetching study materials:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+});
+
+
+app.get("/getSyllabus/:stream/:branch/:branchYear", async (req, res) => {
+  try {
+    const { stream, branch, branchYear } = req.params; // Extract path parameters
+
+    // Validate parameters
+    if (!stream || !branch || !branchYear) {
+      return res.status(400).json({
+        success: false,
+        message: "All parameters (stream, branch, branchYear) are required.",
+      });
+    }
+
+    let query = { stream, branchYear };
+
+    // Include branch if the stream isn't B.Tech or branchYear isn't First Year
+    if (!(stream === "B.Tech" && branchYear === "First Year")) {
+      query.branch = branch;
+    }
+
+    // Fetch syllabus data from the database based on the query
+    const syllabus = await SyllabusModel.find(query);
+
+    // Check if syllabus was found
+    if (!syllabus.length) {
+      return res.status(404).json({
+        success: false,
+        message: "No syllabus found for the specified criteria.",
+      });
+    }
+
+    // Return the retrieved syllabus
+    res.status(200).json({ success: true, data: syllabus });
+  } catch (error) {
+    console.error("Error fetching syllabus:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+});
+
+
+app.get("/getPdfs/:stream/:branch/:branchYear", async (req, res) => {
+  try {
+    const { stream, branch, branchYear } = req.params; // Extract path parameters
+
+    // Check if any parameter is empty
+    if (!stream || !branch || !branchYear) {
+      return res.status(400).json({
+        success: false,
+        message: "All parameters (stream, branch, branchYear) are required.",
+      });
+    }
+
+    let query = { stream, branchYear };
+
+    // If the stream is not B.Tech or branchYear is not First Year, include branch in the query
+    if (!(stream === "B.Tech" && branchYear === "First Year")) {
+      query.branch = branch;
+    }
+
+    // Fetch PDFs from the database based on the query
+    const pdfs = await PdfModel.find(query);
+ 
+    // Check if PDFs were found
+    if (!pdfs.length) {
+      return res.status(404).json({
+        success: false,
+        message: "No PDFs found for the specified criteria.",
+      });
+    }
+
+    // Return the retrieved PDFs
+    res.status(200).json({ success: true, data: pdfs });
+  } catch (error) {
+    console.error("Error fetching PDFs:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
   }
 });
 

@@ -1,19 +1,21 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const pdfSchema = new mongoose.Schema({
-  title: { type: String, required: true },           // Title of the paper
-  examinationYear: { type: Number, required: true }, // Year of the examination
-  stream: { type: String, required: true },          // Stream (e.g., B.Tech, M.Tech)
-  branch: { type: String, required: true },          // Branch (e.g., Computer Science, Mechanical)
-  branchYear: {                                       // Year within the branch (e.g., First Year)
+  title: { type: String, required: true },
+  examinationYear: { type: Number, required: true },
+  stream: { type: String, required: true },
+  branch: { type: String, required: true },
+  branchYear: {
     type: String,
-    enum: ['First Year', 'Second Year', 'Third Year', 'Fourth Year'], 
-    required: true
+    enum: ["First Year", "Second Year", "Third Year", "Fourth Year"],
+    required: true,
   },
-  url: { type: String, required: true },             // Public URL of the PDF
-  downloadUrl: { type: String, required: true },     // Download URL of the PDF
-  fileName: { type: String, required: true },        // File name of the uploaded PDF
-  createdAt: { type: Date, default: Date.now },      // Timestamp when the record is created
+  semester:{type:Number,required:true,min:1,max:8},
+  url: { type: String, required: true },
+  downloadUrl: { type: String, required: true },
+  fileName: { type: String, required: true },
+  universityName: { type: String, enum: ["Btu", "Rtu"], required: true },
+  createdAt: { type: Date, default: Date.now },
 });
 
-export const PdfModel = mongoose.model('Pdf', pdfSchema);
+export const PdfModel = mongoose.model("Pdf", pdfSchema);
