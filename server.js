@@ -260,6 +260,94 @@ app.get("/getPdfs/:stream/:branch/:branchYear", async (req, res) => {
 });
 
 
+app.get("/Cpdf", async (req, res) => {
+  try {
+    // Fetch all PDFs from the database
+    const pdfs = await PdfModel.find({}); // {} ensures fetching all documents
+
+    // Check if PDFs exist
+    if (!pdfs || pdfs.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No PDFs found.",
+      });
+    }
+
+    // Send the retrieved PDFs as JSON
+    res.status(200).json({ 
+      success: true, 
+      data: pdfs 
+    });
+
+  } catch (error) {
+    console.error("Error fetching PDFs:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+});
+
+app.get("/CSyllabus", async (req, res) => {
+  try {
+    // Fetch all PDFs from the database
+    const pdfs = await SyllabusModel.find({}); // {} ensures fetching all documents
+
+    // Check if PDFs exist
+    if (!pdfs || pdfs.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No PDFs found.",
+      });
+    }
+
+    // Send the retrieved PDFs as JSON
+    res.status(200).json({ 
+      success: true, 
+      data: pdfs 
+    });
+
+  } catch (error) {
+    console.error("Error fetching PDFs:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+});
+
+
+app.get("/CS", async (req, res) => {
+  try {
+    // Fetch all PDFs from the database
+    const pdfs = await StudyMaterialModel.find({}); // {} ensures fetching all documents
+
+    // Check if PDFs exist
+    if (!pdfs || pdfs.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No PDFs found.",
+      });
+    }
+
+    // Send the retrieved PDFs as JSON
+    res.status(200).json({ 
+      success: true, 
+      data: pdfs 
+    });
+
+  } catch (error) {
+    console.error("Error fetching PDFs:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+});
+
 
 app.listen(process.env.PORT || 9000, () => {
   console.log(`Server running on port ${PORT}`);
